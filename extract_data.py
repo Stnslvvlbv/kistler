@@ -18,8 +18,12 @@ def readTXT(file_name):
                 row += 1
             elif START_ROW_DATA == row:
                 data_row = line.strip().split('	')
-                data.append(data_row)
+                data_float =[]
+                for el in data_row:
+                    el = float(el)
+                    data_float.append(el)
+                data.append(data_float)
 
 
 result = readTXT('example/KseniaT 005.txt')
-print('result')
+print(result)
