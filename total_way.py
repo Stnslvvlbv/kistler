@@ -3,12 +3,14 @@ data = [[28.957, -3.30911, -4.030746, -0.474147, -0.32321], [28.958, 2.955289, 1
 
 
 def total_way(data):
+    n = 0
     wayX = 0
     wayY = 0
     for el in data:
         wayX += abs(el[1])
         wayY += abs(el[2])
-    return({'wayX': wayX, 'wayY': wayY})
+        n += 1
+    return {'wayX': wayX, 'wayY': wayY, 'n': n}
 
 
 result = total_way(data)
