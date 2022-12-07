@@ -3,4 +3,5 @@ include/
 Lib/
 Scripts/
 example/
+__pycache__/
 pyvenv.cft

@@ -8,7 +8,8 @@ def moving_avg(x, n):
     return (cumsum[n:] - cumsum[:-n]) / float(n)
 
 
-def moving_average(data, n=7):
+def moving_average(data, n=200):
+    print("расчет массива данных по скользящей средней N = ", n)
     dataNP = np.array(data)
 
     dataNpTransponse = np.transpose(dataNP)
@@ -20,7 +21,6 @@ def moving_average(data, n=7):
         resultArrayTransponse.append(rowMA)
 
     resultArray = np.transpose(resultArrayTransponse)
-   
+
     return resultArray
 
-test = moving_average(data=data, n=7)

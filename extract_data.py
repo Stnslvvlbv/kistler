@@ -1,6 +1,7 @@
 import os
 
 
+
 def readTXT(file_name):
     data = []
     with open(file_name, 'r') as text:
@@ -25,5 +26,5 @@ def readTXT(file_name):
                 data.append(data_float)
 
 
-result = readTXT('example/KseniaT 005.txt')
-print(result)
+# result = readTXT('example/KseniaT 005.txt')
+
