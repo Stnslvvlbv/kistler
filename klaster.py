@@ -20,13 +20,14 @@ def klaster(data):
         return centers[0]
 
 
-def klasters_array(data, n=100):
+def klasters_array(data, n=100, step=10):
     klaster_data = []
-    for iter in range(0, len(data)-n):
+    for iter in range(0, len(data)-n,  step):
         print('кластерное разделение выборки', iter, 'из', len(data)-n, 'выборок')
         dataNP = np.array(data)
         d = dataNP[iter: iter+n, [1, 2]]
         row_data = klaster(d)
+        print(row_data)
         klaster_data.append(row_data)
     return klaster_data
 

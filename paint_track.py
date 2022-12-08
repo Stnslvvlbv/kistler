@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def paint(data):
+def paint(data, shift=1):
     height = 700
     width = 700
     img = np.zeros((width, height, 3), np.uint8)
@@ -10,12 +10,11 @@ def paint(data):
 
     poligon = []
     for el in data:
-        X_next = el[1]*10 + width / 2
-        Y_next = el[2]*10 + height / 2
-        if el[1] != -5.058380 and el[2] != -9.578082:
+        X_next = el[shift]*10 - width / 2
+        Y_next = el[shift+1]*10 - height / 2
 
-            corner = [X_next, Y_next]
-            poligon.append(corner)
+        corner = [X_next, Y_next]
+        poligon.append(corner)
 
     pts = np.array(poligon,  np.int64)
     pts = pts.reshape((-1, 1, 2))
