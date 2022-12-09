@@ -12,6 +12,8 @@ def readFile(file_name):
             line = text.readline()
             if line[0:8] == '0.000000':
                 FLAG = 'read data'
+            elif len(line) < 1:
+                FLAG = 'end'
 
             if FLAG == 'read data':
                 data_row = line.strip().split('	')
@@ -21,4 +23,7 @@ def readFile(file_name):
                     data_float.append(el)
 
                 data.append(data_float)
+            elif FLAG == 'end':
+                return data
+
     return data

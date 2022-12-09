@@ -13,13 +13,13 @@ def total_way(data):
         wayX += abs(el[1])
         wayY += abs(el[2])
         n += 1
-    return {'wayX': wayX, 'wayY': wayY, 'n': n}
+    return {'wayX': round(wayX, 2), 'wayY': round(wayY, 2), 'n': n}
 
 def average(sum_data):
 
     averageY = sum_data['wayY'] / sum_data['n']
     averageX = sum_data['wayX'] / sum_data['n']
-    return {'averageY': averageY, 'averageX': averageX}
+    return {'averageY': round(averageY, 2), 'averageX': round(averageX, 2)}
 
 
 # result = total_way(data)
