@@ -23,8 +23,9 @@ def readTXT(file_name):
                 for el in data_row:
                     el = float(el)
                     data_float.append(el)
-                data.append(data_float)
 
+                data.append(data_float)
+    return data
 
 # result = readTXT('example/KseniaT 005.txt')
 
