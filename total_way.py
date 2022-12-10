@@ -24,11 +24,18 @@ def total_way(data):
 
     return {'wayX': round(wayX, 2), 'wayY': round(wayY, 2), 'totals_way': round(totals_way, 2), 'n': n}
 
-def average(sum_data):
+def average(data):
 
-    averageY = sum_data['wayY'] / sum_data['n']
-    averageX = sum_data['wayX'] / sum_data['n']
-    return {'averageY': round(averageY, 2), 'averageX': round(averageX, 2)}
+    n = 0
+    sum_X = 0
+    sum_Y = 0
+    for row in data:
+        sum_X += row[1]
+        sum_Y += row[2]
+        n += 1
+    averageY = sum_Y / n
+    averageX = sum_X / n
+    return {'averageX': round(averageX, 2), 'averageY': round(averageY, 2),}
 
 
 # result = total_way(data)

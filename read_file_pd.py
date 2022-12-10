@@ -1,0 +1,40 @@
+import os
+import  pandas as pd
+
+
+def readFile(file_name):
+
+    MILIMETRS = 1000 # in metr
+    with open(file_name, 'r') as text:
+        file =file_name.split('/')[-1]
+        FLAG = 'start'
+        data = []
+        while FLAG != 'end':
+            line = text.readline()
+
+            if line[0:12] == 'abs time (s)':
+                FLAG = 'read header'
+                header= line.strip('\n').split('\t')
+            elif line[0:8] == '0.000000':
+                FLAG = 'read data'
+            elif len(line) < 1:
+                FLAG = 'end'
+
+            if FLAG == 'read data':
+                data_row = line.strip().split('	')
+                data_row_float = []
+                for elIndex in range(0, len(data_row)):
+                    el = float(data_row[elIndex])
+                    data_row_float.append(el)
+                data.append(data_row_float)
+    dataPD = pd.DataFrame(data,  index=None, columns=header)
+
+    dataPD['Ax'] *= MILIMETRS
+    dataPD['Ay'] *= MILIMETRS
+
+    return dataPD
+
+
+
+# test = readFile('example/sample.txt')
+# print(test)

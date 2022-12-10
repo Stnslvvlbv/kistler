@@ -26,7 +26,6 @@ def paint(data, shift=1, corner_step=10):
     else:
         frame_size_img = abs(min_value) * 2
 
-    print('min_value',min_value, 'max_value', max_value, frame_size_img)
     scale = 1 # (width - frame * 2)/frame_size_img
 
     poligon = []

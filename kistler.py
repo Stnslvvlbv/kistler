@@ -12,7 +12,7 @@ class kistler():
         self.url = url
         self.freshData = readFile(url)
         self.total_way = total_way(self.freshData)
-        self.average = average(self.total_way)
+        self.average = average(self.freshData)
         self.standart_deviation = stand_dev(self.freshData, self.total_way)
 
 

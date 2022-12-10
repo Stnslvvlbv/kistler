@@ -6,7 +6,7 @@ def readFile(file_name):
     data = []
     with open(file_name, 'r') as text:
         file =file_name.split('/')[-1]
-        print(f'Чтение файла, {file} извлечение данных')
+        # print(f'Чтение файла, {file} извлечение данных')
         START_ROW_DATA = 19
         row = 0
         FLAG = 'start'
