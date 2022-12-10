@@ -22,5 +22,8 @@ def moving_average(data, n=200):
 
     resultArray = np.transpose(resultArrayTransponse)
 
+    roundArray = []
+
+
     return resultArray
 
