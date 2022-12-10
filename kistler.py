@@ -14,7 +14,6 @@ class kistler():
         self.total_way = total_way(self.freshData)
         self.average = average(self.total_way)
         self.standart_deviation = stand_dev(self.freshData, self.total_way)
-        # self.test = paint(self.MAarray)
 
 
     def paint_ewma(self, alpha=0.01, order_ema=1, corner_step=10):
@@ -35,5 +34,5 @@ print(test.total_way)
 print(test.average)
 print(test.standart_deviation)
 # test.paint_moving_average(n=400, corner_step=5)
-test.paint_ewma(alpha=0.01, order_ema=3, corner_step=10, )
+test.paint_ewma(alpha=0.01, order_ema=3, corner_step=1)
 # test.klaster_data(n=200, step=10)
