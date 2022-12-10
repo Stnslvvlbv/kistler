@@ -1,4 +1,6 @@
 import os
+import  numpy as np
+
 
 def readFile(file_name):
     data = []
@@ -18,9 +20,10 @@ def readFile(file_name):
             if FLAG == 'read data':
                 data_row = line.strip().split('	')
                 data_float =[]
-                for el in data_row:
-                    el = float(el)
-                    data_float.append(el)
+                for elIndex in range(0, len(data_row)):
+                    el = float(data_row[elIndex]) * 1000 # мм
+                    if elIndex in [0, 17, 18]:
+                        data_float.append(el)
 
                 data.append(data_float)
             elif FLAG == 'end':

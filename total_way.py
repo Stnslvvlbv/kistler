@@ -7,19 +7,21 @@ from math import sqrt
 
 def total_way(data):
 
-    n = 0
+    n = 1
     wayX = 0
     wayY = 0
     totals_way = 0
-    for index_el in range(0, len(data)):
-        wayX += abs(data[index_el][1])
-        wayY += abs(data[index_el][2])
+    for index_el in range(1, len(data)):
+        deltaX = abs(data[index_el][1] - data[index_el - 1][1])
+        deltaY = abs(data[index_el][2] - data[index_el - 1][2])
+        wayX += deltaX
+        wayY += deltaY
         n += 1
-        if index_el > 0:
-            way_element = sqrt(data[index_el][1] ** 2 + data[index_el][2] ** 2)
-            totals_way += way_element
 
-        
+        way_element = sqrt(deltaX ** 2 + deltaY ** 2)
+        totals_way += way_element
+
+
     return {'wayX': round(wayX, 2), 'wayY': round(wayY, 2), 'totals_way': round(totals_way, 2), 'n': n}
 
 def average(sum_data):

@@ -29,10 +29,11 @@ class kistler():
         paint(self.KlasterArray, shift=0, corner_step=corner_step)
 
 
-test = kistler('example/KseniaT 005.txt')
+test = kistler('example/sample.txt') # ('example/Stepan 001.txt')
+print(test.freshData)
 print(test.total_way)
 print(test.average)
 print(test.standart_deviation)
 # test.paint_moving_average(n=400, corner_step=5)
-test.paint_ewma(alpha=0.01, order_ema=3, corner_step=1)
+test.paint_ewma(alpha=0.2, order_ema=1, corner_step=1)
 # test.klaster_data(n=200, step=10)
