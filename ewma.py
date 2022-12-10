@@ -25,10 +25,9 @@ def ewma(data, alpha=0.01, order_ema=1):
     resultArrayTransponse.append(dataNpTransponse[0])
 
     for rowIndex in range(1, len(dataNpTransponse)):
-
         rowResult = dataNpTransponse[rowIndex]
+        
         for order in range(0, order_ema):
-            print(order, order_ema)
             rowResult = ema_counter(rowResult, alpha=alpha)
 
         resultArrayTransponse.append(rowResult)
