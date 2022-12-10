@@ -18,7 +18,7 @@ def stand_dev(data, sum):
     StanartDevY = sqrt((1/(sum['n'] - 1)) * Sum_sqrY)
     StanartDevX = sqrt((1/(sum['n'] - 1)) * Sum_sqrX)
 
-    return {'standart_dev_x': StanartDevX, 'standart_dev_y': StanartDevY}
+    return {'standart_dev_x': round(StanartDevX, 2), 'standart_dev_y': round(StanartDevY, 2)}
 
 # test = stand_dev(data, sum)
 # print(test)

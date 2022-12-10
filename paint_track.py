@@ -35,14 +35,25 @@ def paint(data, shift=1, corner_step=10):
 
     pts = np.array(poligon,  np.int64)
     pts = pts.reshape((-1, 1, 2))
-    image = cv2.polylines(img, [pts], False, ( 0, 255, 0), 4)
-    cv2.line(img, (10,height-10), ( width - 10,height-10), (100,100,100), 3)
+    image = cv2.polylines(img, [pts], False, ( 0, 255, 0), 2)
+    COLOR_XOY = (100,100,100)
+    FONT_SIZE = 0.5
+    '''отрисовка оси Х'''
+    cv2.line(img, (10,height-10), ( width - 10,height-10), COLOR_XOY, 1)
+    cv2.line(img, (width - 15, height - 15), (width - 10, height - 10), COLOR_XOY, 1)
+    cv2.line(img, (width - 15, height - 5), (width - 10, height - 10), COLOR_XOY, 1)
     image = cv2.putText(img, 'M-L', ( width - 50, height-20), cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale, color, thickness, cv2.LINE_AA)
+                        FONT_SIZE, COLOR_XOY, 2, cv2.LINE_AA)
+    '''отрисовка оси Y'''
+    cv2.line(img, (10, 10), (10, height - 10), COLOR_XOY, 1)
+    cv2.line(img, (10, 10), (15, 15), COLOR_XOY, 1)
+    cv2.line(img, (10, 10), (5, 15), COLOR_XOY, 1)
+    image = cv2.putText(img, 'A-P', ( 20, 20), cv2.FONT_HERSHEY_SIMPLEX,
+                        FONT_SIZE, COLOR_XOY, 1, cv2.LINE_AA)
     # cv2.line(img, (10, width - 10), end_point, color, thickness)
 
     cv2.imshow("Image", image)
-    cv2.waitKey(5000)
+    cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 # paint(data)
