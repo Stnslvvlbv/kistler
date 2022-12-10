@@ -4,6 +4,7 @@ from paint_track import paint
 from klaster import klasters_array
 from total_way import total_way, average
 from ewma import ewma
+from standart_deviation import stand_dev
 
 
 class kistler():
@@ -12,6 +13,7 @@ class kistler():
         self.freshData = readFile(url)
         self.total_way = total_way(self.freshData)
         self.average = average(self.total_way)
+        self.standart_deviation = stand_dev(self.freshData, self.total_way)
         # self.test = paint(self.MAarray)
 
 
@@ -30,7 +32,8 @@ class kistler():
 
 test = kistler('example/KseniaT 005.txt')
 print(test.total_way)
-# print(test.average)
+print(test.average)
+print(test.standart_deviation)
 # test.paint_moving_average(n=400, corner_step=5)
 test.paint_ewma(alpha=0.02, order_ema=3, corner_step=10, )
 # test.klaster_data(n=200, step=10)
