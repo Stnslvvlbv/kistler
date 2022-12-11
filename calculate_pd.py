@@ -19,3 +19,5 @@ def total_way(dataPD):
         total += way_element
 
     return {'wayX (мм)': round(wayX, 2), 'wayY (мм)': round(wayY, 2), 'total_way (мм)': round(total, 2)}
+
+
