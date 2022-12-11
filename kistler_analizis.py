@@ -20,7 +20,7 @@ class kistler():
 
     def paint_track(self):
 
-        self.freshdata.plot(x='Ax', y='Ay', xlabel='M-L', ylabel='A-P')
+        self.freshdata.plot(x='Ax', y='Ay', xlabel='M-L (мм)', ylabel='A-P (мм)')
         plt.show()
 
 
