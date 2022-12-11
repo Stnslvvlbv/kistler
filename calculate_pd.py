@@ -18,4 +18,4 @@ def total_way(dataPD):
         way_element = sqrt(deltaX ** 2 + deltaY ** 2)
         total += way_element
 
-    return {'wayX': round(wayX, 2), 'wayY': round(wayY, 2), 'total_way': round(total, 2)}
+    return {'wayX (мм)': round(wayX, 2), 'wayY (мм)': round(wayY, 2), 'total_way (мм)': round(total, 2)}

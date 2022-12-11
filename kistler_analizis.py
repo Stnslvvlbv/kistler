@@ -10,17 +10,19 @@ class kistler():
         self.freshdata = readFile(url)
         self.total = total_way(self.freshdata)
         self.average = {
-            'averageX': round(self.freshdata['Ax'].mean(), 2),
-            'averedeY': round(self.freshdata['Ay'].mean(), 2),
+            'averageX (мм)': round(self.freshdata['Ax'].mean(), 2),
+            'averedeY (мм)': round(self.freshdata['Ay'].mean(), 2),
         }
         self.standart_deviation = {
-            'stdX': round(self.freshdata['Ax'].std(), 2),
-            'stdY': round(self.freshdata['Ay'].std(), 2),
+            'stdX (мм)': round(self.freshdata['Ax'].std(), 2),
+            'stdY (мм)': round(self.freshdata['Ay'].std(), 2),
         }
 
     def paint_track(self):
+      
 
-        self.freshdata.plot(x='Ax', y='Ay', xlabel='M-L (мм)', ylabel='A-P (мм)')
+
+        self.freshdata.plot(x='Ax', y='Ay', xlabel='M-L (мм)', ylabel='A-P (мм)', label='COP')
         plt.show()
 
 
