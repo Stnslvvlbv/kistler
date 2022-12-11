@@ -1,6 +1,7 @@
 import pandas as pd
 from math import sqrt
 
+
 def total_way(dataPD):
 
     wayX = 0
@@ -21,3 +22,7 @@ def total_way(dataPD):
     return {'wayX (мм)': round(wayX, 2), 'wayY (мм)': round(wayY, 2), 'total_way (мм)': round(total, 2)}
 
 
+def name_cuter(url):
+    name_txt_file = url.split('/')[-1]
+    name = name_txt_file.split('.')[0]
+    return name
