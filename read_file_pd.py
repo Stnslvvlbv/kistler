@@ -2,7 +2,7 @@ import os
 import  pandas as pd
 
 
-def readFile(file_name):
+def readFile(file_name, window):
 
     MILIMETRS = 1000 # in metr
     with open(file_name, 'r') as text:
@@ -27,12 +27,15 @@ def readFile(file_name):
                     el = float(data_row[elIndex])
                     data_row_float.append(el)
                 data.append(data_row_float)
+    dataMA =[]
     dataPD = pd.DataFrame(data,  index=None, columns=header)
 
     dataPD['Ax'] *= MILIMETRS
     dataPD['Ay'] *= MILIMETRS
 
-    return dataPD
+    data_moving_average = dataPD.rolling(window, on='abs time (s)', min_periods=1).mean()
+
+    return data_moving_average
 
 
 
