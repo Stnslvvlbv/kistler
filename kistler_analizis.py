@@ -56,7 +56,7 @@ class Kistler():
             linewidth=6,
         )
         # plt.plot(point_average[0], point_average[1], color=(1, 0, 0, 0.4),linewidth=6,)
-        plt.title("Линейный график\n(по заданным  целочисленным данным)")
+        plt.title("")
         plt.show()
 
 
