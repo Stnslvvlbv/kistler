@@ -122,15 +122,14 @@ def square(dataPD, average):
     for qr in max_radius:
         for seg in max_radius[qr]:
             result_points.append(max_radius[qr][seg]['row'])
+    result_points.append(result_points[0])
+
     square_result = 0
     data_sq = pd.DataFrame(result_points, index=None, columns=['Ax', 'Ay'])
 
-    for iter in range(0, len(result_points)):
+    for iter in range(1, len(result_points)):
         point2 = result_points[iter]
-        if iter == 0:
-            point3 = result_points[len(result_points) - 1]
-        else:
-            point3 = result_points[iter - 1]
+        point3 = result_points[iter - 1]
 
         s_triangle = triangle_square(
             average['averageX (мм)'],
