@@ -8,7 +8,7 @@ from math import sqrt
 from plot_confidence_ellipse import confidence_ellipse
 from read_file_pd import readFile
 from calculate_pd import total_way, name_cuter, square
-from princ_comp_analysis import princ_comp_analysis
+# from princ_comp_analysis import princ_comp_analysis
 
 class Kistler():
 

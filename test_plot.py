@@ -1,5 +1,8 @@
 import os
 
+from kistler_analizis import Kistler
+
+
 def iter_file(folder):
     files = os.listdir(folder)
     image_folder = folder + '/' + 'images'
@@ -10,6 +13,8 @@ def iter_file(folder):
         print(filename)
         url = folder + '/' + filename
 
+        analysis = Kistler(url)
+        analysis.elipce()
 
 iter_file('D:/pr/kistler/example/auto_center')
 
