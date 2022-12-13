@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 import matplotlib.transforms as transforms
 
-def confidence_ellipse(covariance_matrix, average, ax, n_std=3.0, facecolor='none', **kwargs):
+
+def confidence_ellipse(covariance_matrix, average, ax, n_std=1.96, facecolor='none', **kwargs):
     """
     Create a plot of the covariance confidence ellipse of `x` and `y`
 
@@ -37,15 +38,19 @@ def confidence_ellipse(covariance_matrix, average, ax, n_std=3.0, facecolor='non
 
     # cov = np.cov(x, y)
     pearson = covariance_matrix.iloc[0, 1] / np.sqrt(covariance_matrix.iloc[0, 0] * covariance_matrix.iloc[1, 1])
+
     # Using a special case to obtain the eigenvalues of this
     # two-dimensionl dataset.
 
     ell_radius_x = np.sqrt(1 + pearson)
     ell_radius_y = np.sqrt(1 - pearson)
+
+
     ellipse = Ellipse((0, 0),
                       width=ell_radius_x * 2,
                       height=ell_radius_y * 2,
-                      facecolor=(0, 0.5, 0, 0.3),
+                      facecolor=facecolor,
+                      edgecolor=(1, 0.1, 0.1, 0.7),
                       **kwargs)
 
     # Calculating the stdandard deviation of x from
@@ -57,7 +62,7 @@ def confidence_ellipse(covariance_matrix, average, ax, n_std=3.0, facecolor='non
     # calculating the stdandard deviation of y ...
     scale_y = np.sqrt(covariance_matrix.iloc[1, 1]) * n_std
     mean_y = average['averageY (мм)']
-    print(scale_x, scale_y)
+
     transf = transforms.Affine2D() \
         .rotate_deg(45) \
         .scale(scale_x, scale_y) \

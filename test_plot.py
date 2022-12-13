@@ -10,12 +10,13 @@ def iter_file(folder):
         os.mkdir(image_folder)
 
     for filename in files:
-        print(filename)
-        url = folder + '/' + filename
+        if filename.split('.')[-1] == 'txt':
+            print(filename)
+            url = folder + '/' + filename
 
-        analysis = Kistler(url)
-        analysis.elipce()
+            analysis = Kistler(url)
+            analysis.elipce(image_folder)
 
-iter_file('D:/pr/kistler/example/auto_center')
+iter_file('D:/pr/kistler/example/ST013_no_option')
 
 

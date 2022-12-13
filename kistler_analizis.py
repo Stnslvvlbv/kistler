@@ -19,16 +19,16 @@ class Kistler():
         self.name = name_cuter(self.url)
         self.total = total_way(self.freshdata)
         self.average = {
-            'averageX (мм)': round(self.freshdata['Ax'].mean(), 2),
-            'averageY (мм)': round(self.freshdata['Ay'].mean(), 2),
+            'averageX (мм)': self.freshdata['Ax'].mean(),
+            'averageY (мм)': self.freshdata['Ay'].mean(),
         }
 
         self.covariance_matrix = self.freshdata[['Ax', 'Ay']].cov()
         self.pearson = self.covariance_matrix.iloc[0, 1] / sqrt(self.covariance_matrix.iloc[0, 0] * self.covariance_matrix.iloc[1, 1])
 
         self.standart_deviation = {
-            'stdX (мм)': round(self.freshdata['Ax'].std(), 2),
-            'stdY (мм)': round(self.freshdata['Ay'].std(), 2),
+            'stdX (мм)': self.freshdata['Ax'].std(),
+            'stdY (мм)': self.freshdata['Ay'].std(),
         }
 
         sqr = square(self.freshdata, self.average)
@@ -74,7 +74,7 @@ class Kistler():
         plt.show()
 
 
-    def elipce(self, n_std=3):
+    def elipce(self, path_image, n_std=3):
         x = 'Ax'
         y = 'Ay'
         X = self.freshdata[['Ax']].to_numpy()
@@ -88,14 +88,14 @@ class Kistler():
 
         ax = data_paint.plot(x=x, y=y, xlabel='M-L (мм)',
             color=(0, 0, 1, 1), ylabel='A-P (мм)', label='COP')
-
+        """
         plt.plot(
             self.square_points['Ax'], self.square_points['Ay'],
             label='square',
-            color=(1, 0, 0, 0.2),
+            color=(1, 0.1, 0.1, 0.3),
             linewidth=6,
         )
-
+        """
         plt.scatter(self.average['averageX (мм)'], self.average['averageY (мм)'])
 
         ellipse = confidence_ellipse(
@@ -104,16 +104,15 @@ class Kistler():
             ax=ax
         )
 
+        plt.savefig(path_image + '/' + self.name)
+        # plt.show()
 
-        # ax.add_patch(ellipse)
-        plt.show()
-
-test = Kistler('sample.txt')
-print(test.total)
-print(test.average)
-print(test.standart_deviation)
+## test = Kistler('sample.txt')
+## print(test.total)
+## print(test.average)
+## print(test.standart_deviation)
 # test.paint_track(step=1)
 # test.principal_component_analysis()
-test.elipce()
-print(test.square)
+## test.elipce('jjj')
+## print(test.square)
 #-0.6041877416129416
