@@ -74,7 +74,7 @@ class Kistler():
         plt.show()
 
 
-    def elipce(self, path_image, n_std=3):
+    def ellipce(self, path_image, n_std=3):
         x = 'Ax'
         y = 'Ay'
         X = self.freshdata[['Ax']].to_numpy()
@@ -104,15 +104,17 @@ class Kistler():
             ax=ax
         )
 
-        plt.savefig(path_image + '/' + self.name)
-        # plt.show()
+        self.ellipse_square = ellipse['square']
+        ellipse['plot']
+        # plt.savefig(path_image + '/' + self.name)
+        plt.show()
 
-## test = Kistler('sample.txt')
+test = Kistler('sample.txt')
 ## print(test.total)
 ## print(test.average)
 ## print(test.standart_deviation)
 # test.paint_track(step=1)
 # test.principal_component_analysis()
-## test.elipce('jjj')
-## print(test.square)
+test.ellipce('jjj')
+print(test.ellipse_square)
 #-0.6041877416129416

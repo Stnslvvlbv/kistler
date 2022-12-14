@@ -15,7 +15,7 @@ def iter_file(folder):
             url = folder + '/' + filename
 
             analysis = Kistler(url)
-            analysis.elipce(image_folder)
+            analysis.ellipce(image_folder)
 
 iter_file('D:/pr/kistler/example/ST013_no_option')
 
