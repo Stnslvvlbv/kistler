@@ -3,6 +3,7 @@ from math import sqrt, pi, cos, radians
 import math
 
 def total_way(dataPD):
+    
     STEP = 10
     wayX = 0
     wayY = 0
