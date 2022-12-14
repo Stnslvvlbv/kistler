@@ -104,17 +104,16 @@ class Kistler():
             ax=ax
         )
 
-        self.ellipse_square = ellipse['square']
+        self.ellipse_square = round(ellipse['square'], 2)
         ellipse['plot']
         # plt.savefig(path_image + '/' + self.name)
         plt.show()
 
 test = Kistler('sample.txt')
-## print(test.total)
-## print(test.average)
-## print(test.standart_deviation)
+print(test.total)
+print(test.average)
+print(test.standart_deviation)
 # test.paint_track(step=1)
 # test.principal_component_analysis()
 test.ellipce('jjj')
-print(test.ellipse_square)
-#-0.6041877416129416
+print('ellipse_square (мм)', test.ellipse_square)
