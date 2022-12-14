@@ -79,6 +79,7 @@ class Kistler():
         y = 'Ay'
         X = self.freshdata[['Ax']].to_numpy()
 
+
         poligon_paint = []
         for elIndex in range(0, len(self.freshdata), 1):
             corner_paint = [self.freshdata[x][elIndex], self.freshdata[y][elIndex]]

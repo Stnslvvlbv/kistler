@@ -3,13 +3,13 @@ from math import sqrt, pi, cos, radians
 import math
 
 def total_way(dataPD):
-    
+
     STEP = 10
     wayX = 0
     wayY = 0
     total = 0
 
-    for IndexEl in range(1, len(dataPD)):
+    for IndexEl in range(1, len(dataPD), STEP):
 
         deltaX = abs(dataPD['Ax'][IndexEl] - dataPD['Ax'][IndexEl-1])
         deltaY = abs(dataPD['Ay'][IndexEl] - dataPD['Ay'][IndexEl-1])
