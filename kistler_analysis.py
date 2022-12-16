@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 
-import pandas as pd
 from math import sqrt
 
 from plot_confidence_ellipse import confidence_ellipse
@@ -8,16 +7,13 @@ from read_file_pd import readFile
 from calculate_pd import total_way, name_cuter, square
 
 
-# from princ_comp_analysis import princ_comp_analysis
-
-
-def track_fresh(dataPD, average, step=1, x='Ax', y='Ay'):
+def track_fresh(dataPD, average, x='Ax', y='Ay'):
     ax = dataPD.plot(x=x, y=y, xlabel='M-L (мм)', ylabel='A-P (мм)', label='COP')
     plt.scatter(average['averageX (мм)'], average['averageY (мм)'], color=(0.9, 0.1, 0.1, 0.5), lw=3)
     return ax
 
 
-class Kistler():
+class Kistler:
 
     def __init__(self, url):
         WINDOW = 35
@@ -64,18 +60,19 @@ class Kistler():
         plt.show()
 
 
-    def ellipse(self, path_image, n_std=3):
+    def ellipse(self, path_image, n_std=1.96):
 
         ax = track_fresh(self.fresh_data, self.average)
 
         ellipse = confidence_ellipse(
             self.covariance_matrix,
             self.average,
+            n_std=n_std,
             ax=ax
         )
 
         self.ellipse_square = round(ellipse['square'], 2)
-        ellipse['plot']
+        # var = ellipse['plot']
 
         # plt.savefig(path_image + '/' + self.name)
         plt.show()

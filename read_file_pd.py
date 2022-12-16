@@ -1,12 +1,11 @@
-import os
-import  pandas as pd
+import pandas as pd
 
 
 def readFile(file_name, window):
 
-    MILIMETRS = 1000 # in metr
+    MILLIMETERS = 1000  # in meter
     with open(file_name, 'r') as text:
-        file =file_name.split('/')[-1]
+        # file =file_name.split('/')[-1]
         FLAG = 'start'
         data = []
         while FLAG != 'end':
@@ -14,7 +13,7 @@ def readFile(file_name, window):
 
             if line[0:12] == 'abs time (s)':
                 FLAG = 'read header'
-                header= line.strip('\n').split('\t')
+                header = line.strip('\n').split('\t')
             elif line[0:8] == '0.000000':
                 FLAG = 'read data'
             elif len(line) < 1:
@@ -27,11 +26,11 @@ def readFile(file_name, window):
                     el = float(data_row[elIndex])
                     data_row_float.append(el)
                 data.append(data_row_float)
-    dataMA =[]
+
     dataPD = pd.DataFrame(data,  index=None, columns=header)
 
-    dataPD['Ax'] *= MILIMETRS
-    dataPD['Ay'] *= MILIMETRS
+    dataPD['Ax'] *= MILLIMETERS
+    dataPD['Ay'] *= MILLIMETERS
 
     data_moving_average = dataPD.rolling(window, on='abs time (s)', min_periods=1).mean()
 

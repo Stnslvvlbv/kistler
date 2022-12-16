@@ -1,6 +1,5 @@
 import pandas as pd
-from math import sqrt, pi, cos, radians
-import math
+from math import sqrt, cos, radians
 
 def total_way(dataPD):
 
@@ -35,11 +34,11 @@ def triangle_square(x1, y1, x2, y2, x3, y3):
     b = sqrt((x3 - x1) ** 2 + (y3 - y1) ** 2)
     c = sqrt((x2 - x3) ** 2 + (y2 - y3) ** 2)
     p = (a + b + c) / 2
-    res = math.sqrt(p * (p - a) * (p - b) * (p - c))
+    res = sqrt(p * (p - a) * (p - b) * (p - c))
     return res
 
 def square(dataPD, average):
-    STEP_CORNER = 3
+    STEP_CORNER = 3   # в градусах
     index = 0
     list_index = []
     for name, value in dataPD.items():
@@ -47,37 +46,37 @@ def square(dataPD, average):
             list_index.append(index)
         index += 1
 
-    trackPD = dataPD.iloc[:, list_index] # .sort_values(by=['Ax'])
+    trackPD = dataPD.iloc[:, list_index]    # .sort_values(by=['Ax'])
     # trackPD['Ax'] -= average['averageX (мм)']
     # trackPD['Ay'] -= average['averageY (мм)']
 
 
-    max_radius = {'quarter1' : {}, 'quarter2': {}, 'quarter3': {}, 'quarter4': {}}
+    max_radius = {'quarter1': {}, 'quarter2': {}, 'quarter3': {}, 'quarter4': {}}
     for el in range(0, 360, STEP_CORNER):
         label = str(el) + '-' + str(el + STEP_CORNER)
-        min = round(math.cos(radians(el)), 6)
-        max = round(math.cos(radians(el + STEP_CORNER)), 6)
-        segment =  {'segment': [min, max], 'max': 0, 'row': [],}
+        min_segment_cos = round(cos(radians(el)), 6)
+        max_segment_cos = round(cos(radians(el + STEP_CORNER)), 6)
+        triangle_point = {'segment': [min_segment_cos, max_segment_cos], 'max': 0, 'row': []}
         if 0 <= el < 90:
-            max_radius['quarter1'][label] = segment
+            max_radius['quarter1'][label] = triangle_point
         elif 90 <= el < 180:
-            max_radius['quarter2'][label] = segment
+            max_radius['quarter2'][label] = triangle_point
         elif 180 <= el < 270:
-            max_radius['quarter3'][label] = segment
+            max_radius['quarter3'][label] = triangle_point
         elif 270 <= el < 360:
-            max_radius['quarter4'][label] = segment
+            max_radius['quarter4'][label] = triangle_point
 
     for i, row in trackPD.iterrows():
         row['Ax'] -= average['averageX (мм)']
         row['Ay'] -= average['averageY (мм)']
         radius = sqrt(row['Ax'] ** 2 + row['Ay'] ** 2)
-        cos = (row['Ax'] / radius)
+        cos_corner = (row['Ax'] / radius)
 
         '''поиск максимально отдаленных точек по сегментам'''
         if row['Ax'] >= 0 and row['Ay'] > 0:  # первая четверть
             for key in max_radius['quarter1']:
                 el = max_radius['quarter1'][key]
-                if el['segment'][1] <= cos < el['segment'][0]:
+                if el['segment'][1] <= cos_corner < el['segment'][0]:
                     if radius > el['max']:
                         el['max'] = radius
                         el['row'] = [
@@ -85,10 +84,10 @@ def square(dataPD, average):
                             row['Ay'] + average['averageY (мм)'],
                         ]
 
-        elif row['Ax'] <= 0 and row['Ay'] > 0: # вторая четверть
+        elif row['Ax'] <= 0 < row['Ay']:    # вторая четверть
             for key in max_radius['quarter2']:
                 el = max_radius['quarter2'][key]
-                if el['segment'][1] <= cos < el['segment'][0]:
+                if el['segment'][1] <= cos_corner < el['segment'][0]:
                     if radius > el['max']:
                         el['max'] = radius
                         el['row'] = [
@@ -99,7 +98,7 @@ def square(dataPD, average):
         elif row['Ax'] < 0 and row['Ay'] <= 0:  # третья четверть
             for key in max_radius['quarter3']:
                 el = max_radius['quarter3'][key]
-                if el['segment'][0] <= cos < el['segment'][1]:
+                if el['segment'][0] <= cos_corner < el['segment'][1]:
                     if radius > el['max']:
                         el['max'] = radius
                         el['row'] = [
@@ -107,10 +106,10 @@ def square(dataPD, average):
                             row['Ay'] + average['averageY (мм)'],
                         ]
 
-        elif row['Ax'] > 0 and row['Ay'] <= 0:    #  четвертая четверть
+        elif row['Ax'] > 0 >= row['Ay']:    #  четвертая четверть
             for key in max_radius['quarter4']:
                 el = max_radius['quarter4'][key]
-                if el['segment'][0] <= cos < el['segment'][1]:
+                if el['segment'][0] <= cos_corner < el['segment'][1]:
                     if radius > el['max']:
                         el['max'] = radius
                         el['row'] = [
@@ -128,9 +127,9 @@ def square(dataPD, average):
     square_result = 0
     data_sq = pd.DataFrame(result_points, index=None, columns=['Ax', 'Ay'])
 
-    for iter in range(1, len(result_points)):
-        point2 = result_points[iter]
-        point3 = result_points[iter - 1]
+    for triangle_point in range(1, len(result_points)):
+        point2 = result_points[triangle_point]
+        point3 = result_points[triangle_point - 1]
 
         s_triangle = triangle_square(
             average['averageX (мм)'],
