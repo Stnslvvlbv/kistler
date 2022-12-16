@@ -4,7 +4,7 @@ import math
 
 def total_way(dataPD):
 
-    STEP = 10
+    STEP = 1
     wayX = 0
     wayY = 0
     total = 0

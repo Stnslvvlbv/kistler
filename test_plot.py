@@ -1,6 +1,6 @@
 import os
 
-from kistler_analizis import Kistler
+from kistler_analysis import Kistler
 
 
 def iter_file(folder):
@@ -15,7 +15,7 @@ def iter_file(folder):
             url = folder + '/' + filename
 
             analysis = Kistler(url)
-            analysis.ellipce(image_folder)
+            analysis.ellipse(image_folder)
 
 iter_file('D:/pr/kistler/example/ST013_no_option')
 
