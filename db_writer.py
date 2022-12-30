@@ -111,31 +111,10 @@ def db_write_fresh_data(folder):
 
         for txt in record_list:
             data_element = extract_data_from_txt(record_folder + '/' + txt)
-            print(data_element)
-    """for el in data:
-
-        if not el[1] in list_subject:
-            print("В базе данных присутствует испытуемый", el[1], "но отсутствует в дериктории импорта")
-            answer = input('Для остановки записи базы данных введите "stop", для записи без испытуемого "next": \n')
-            if answer == 'stop':
-                break
-            elif answer == 'next':
-                data.remove(el)
-
-        test_folder = folder + '/' + el[1]
-        test_list = find_txt_file(test_folder)
-
-        for txt in test_list:
-            url_txt = extract_data_from_txt(test_folder + '/' + txt)
-
-            txt_name = txt.split('.')[0]
-            record_number = txt_name.split(' ')[-1]
-
-            record_type_cute = txt_name.split(' ')[0].split('_')[1:]
-            record_type = '_'.join(record_type_cute)
-
-            dataPD = readFile(url_txt)
-            print(dataPD)"""
+            data_element['foreign_key'] = el[0]
+            for key in data_element:
+                print(key, data_element[key])
+   
 
 
 

@@ -52,8 +52,8 @@ def extract_data_from_txt(url):
 
     dataPD = pd.DataFrame(data, index=None, columns=header)
 
-    print(dataPD['Fx'].tolist(), type(dataPD['Fx'].tolist()))
+    # print(dataPD['Fx'].tolist(), type(dataPD['Fx'].tolist()))
     for el in dataPD:
-        print(el)
+        data_element[el] = dataPD[el].tolist()
 
     return data_element
