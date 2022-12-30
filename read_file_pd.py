@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def readFile(file_name, window):
+def readFile(file_name, window=1):
 
     MILLIMETERS = 1000  # in meter
     with open(file_name, 'r') as text:
@@ -38,5 +38,5 @@ def readFile(file_name, window):
 
 
 
-# test = readFile('example/sample.txt')
-# print(test)
+test = readFile('example/sample.txt')
+print(test)
