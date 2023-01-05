@@ -152,12 +152,31 @@ def get_object_by_value(cursor, connection, columns, table, element_filter, valu
 
 def analysis_data():
     # list_id_fresh_data = get_primary_key(columns='id', table='fresh_data')
-    object_data = get_object_by_value(columns='*', table='fresh_data', element_filter='id', value=1)
-    object_data_list = []
-    for col in object_data[4:]:
+    object_data = get_object_by_value(columns='ID, TEST_SUBJECT, RECORD_TYPE, RECORD_NUMBER, abs_time_s, Ax, Ay ', table='fresh_data', element_filter='id', value=1)
+    object_data_dict = {}
+
+    object_data_dict = {
+        'abs_time_s': list(map(lambda x: float(x), object_data[4])),
+        'Ax': list(map(lambda x: float(x), object_data[5])),
+        'Ay': list(map(lambda x: float(x), object_data[6])),
+    }
+    dataPD = pd.DataFrame.from_dict(object_data_dict)
+    """ (ID SERIAL  PRIMARY KEY,
+                             TEST_SUBJECT    integer   REFERENCES test_subject(ID)   NOT NULL,
+                             RECORD_TYPE           VARCHAR(64)    NOT NULL,
+                             RECORD_NUMBER           integer    NOT NULL,
+                             abs_time_s    NUMERIC(6, 3)      ARRAY,
+                             Fx     NUMERIC(9, 6)      ARRAY,
+                             Fy     NUMERIC(9, 6)      ARRAY,
+                             Fz     NUMERIC(10, 6)      ARRAY,
+                             Ft     NUMERIC(10, 6)      ARRAY,
+                             Ax     NUMERIC(7, 6)      ARRAY,
+                             Ay    NUMERIC(7, 6)      ARRAY);"""
+
+    """for col in object_data[4:]:
         el_list = list(map(lambda x: float(x), col))
-        object_data_list.append(el_list)
-    print(len(object_data_list))
+        object_data_list.append(el_list)"""
+    print(dataPD)
 
 
 analysis_data()

@@ -20,7 +20,7 @@ class Kistler:
         self.square = None
         self.ellipse_square = None
         self.url = url.replace('\\', '/')
-        self.fresh_data = readFile(self.url, WINDOW)
+        self.fresh_data = readFile(self.url)
         self.name = name_cuter(self.url)
         self.total = total_way(self.fresh_data)
         self.average = {
@@ -74,11 +74,13 @@ class Kistler:
         self.ellipse_square = round(ellipse['square'], 2)
         # var = ellipse['plot']
 
-        # plt.savefig(path_image + '/' + self.name)
-        plt.show()
+        plt.savefig(path_image + '/' + self.name)
+        # plt.show()
 
 
-test = Kistler('sample.txt')
+"""
+
+test = Kistler('ST0012_anger_EO 001.txt')
 print(test.total)
 print(test.average)
 print(test.standard_deviation)
@@ -87,3 +89,4 @@ test.track_paint()
 test.ellipse('jjj')
 test.square_track()
 print('ellipse_square (мм)', test.ellipse_square)
+"""

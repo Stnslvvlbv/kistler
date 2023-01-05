@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def readFile(file_name, window=1):
+def readFile(file_name, window=35):
 
     MILLIMETERS = 1000  # in meter
     with open(file_name, 'r') as text:
@@ -34,9 +34,9 @@ def readFile(file_name, window=1):
 
     data_moving_average = dataPD.rolling(window, on='abs time (s)', min_periods=1).mean()
 
-    return data_moving_average
+    return data_moving_average[15000:45000]
 
 
 
-test = readFile('example/sample.txt')
-print(test)
+# test = readFile('ST0012_anger_EO 001.txt')
+# print(test)
