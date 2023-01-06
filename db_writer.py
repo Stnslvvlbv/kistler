@@ -3,6 +3,7 @@ import pandas as pd
 import pandas.io.sql as sqlio
 from psycopg2 import Error
 from db_readfile import read_folder_name, find_txt_file, extract_data_from_txt
+from kistler_analysis import KistlerForSQL
 from read_file import readFile
 
 def start_session(func):
@@ -51,7 +52,19 @@ def db_create_table_fresh_data(cursor, connection):
                                  (ID SERIAL  PRIMARY KEY,
                                  TEST_SUBJECT           VARCHAR(64)    NOT NULL); '''
 
-    cursor.execute(create_table_query)
+    create_table_query2 = '''CREATE TABLE analysis
+                                (ID SERIAL  PRIMARY KEY,
+                                RECORD    integer   REFERENCES fresh_data(ID)   NOT NULL,
+                                PROCESSING_TYPE          VARCHAR(250)    NOT NULL,
+                                AVERAGE_X      NUMERIC(5, 2)           NOT NULL,
+                                AVERAGE_Y       NUMERIC(5, 2)           NOT NULL,
+                                TOTAL_WAY       NUMERIC(7, 2)           NOT NULL,
+                                STD_X       NUMERIC(4, 2)           NOT NULL,
+                                STD_Y       NUMERIC(4, 2)           NOT NULL,
+                                ELLIPSE_SQUARE       NUMERIC(6, 2)           NOT NULL
+                                ); '''
+
+    cursor.execute(create_table_query2)
     connection.commit()
     print("Таблица успешно создана в PostgreSQL")
 
@@ -111,7 +124,7 @@ def write_element_fresh_data(cursor, connection, data_element):
                     data_element['Ay'])
                    )
     connection.commit()
-    print("данные записанны")
+    print("данные записаны")
 
 def db_write_fresh_data(folder):
     # проверка на наличие новых испытуемых
@@ -150,33 +163,59 @@ def get_object_by_value(cursor, connection, columns, table, element_filter, valu
     return result
 
 
-def analysis_data():
-    # list_id_fresh_data = get_primary_key(columns='id', table='fresh_data')
-    object_data = get_object_by_value(columns='ID, TEST_SUBJECT, RECORD_TYPE, RECORD_NUMBER, abs_time_s, Ax, Ay ', table='fresh_data', element_filter='id', value=1)
-    object_data_dict = {}
+@start_session
+def write_element_analysis_table(cursor, connection, data_element):
+    cursor.execute('''INSERT INTO analysis
+            (RECORD, PROCESSING_TYPE, AVERAGE_X, AVERAGE_Y, TOTAL_WAY, STD_X, STD_Y, ELLIPSE_SQUARE) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                   (data_element['RECORD'], data_element['PROCESSING_TYPE'],
+                    data_element['AVERAGE_X'], data_element['AVERAGE_Y'],
+                    data_element['TOTAL_WAY'], data_element['STD_X'],
+                    data_element['STD_Y'], data_element['ELLIPSE_SQUARE'],)
+                   )
 
-    object_data_dict = {
-        'abs_time_s': list(map(lambda x: float(x), object_data[4])),
-        'Ax': list(map(lambda x: float(x), object_data[5])),
-        'Ay': list(map(lambda x: float(x), object_data[6])),
-    }
-    dataPD = pd.DataFrame.from_dict(object_data_dict)
-    """ (ID SERIAL  PRIMARY KEY,
-                             TEST_SUBJECT    integer   REFERENCES test_subject(ID)   NOT NULL,
-                             RECORD_TYPE           VARCHAR(64)    NOT NULL,
-                             RECORD_NUMBER           integer    NOT NULL,
-                             abs_time_s    NUMERIC(6, 3)      ARRAY,
-                             Fx     NUMERIC(9, 6)      ARRAY,
-                             Fy     NUMERIC(9, 6)      ARRAY,
-                             Fz     NUMERIC(10, 6)      ARRAY,
-                             Ft     NUMERIC(10, 6)      ARRAY,
-                             Ax     NUMERIC(7, 6)      ARRAY,
-                             Ay    NUMERIC(7, 6)      ARRAY);"""
+    connection.commit()
+    print("данные записаны в analysis")
 
-    """for col in object_data[4:]:
-        el_list = list(map(lambda x: float(x), col))
-        object_data_list.append(el_list)"""
-    print(dataPD)
+def analysis_data(type='moving average: window=35, frequency=100Hz'):
+
+    MILLIMETERS = 1000
+
+    list_id_fresh_data = get_primary_key(columns='id', table='fresh_data')
+    for fresh_element in list_id_fresh_data:
+        if fresh_element[0] > 524:
+            object_data = get_object_by_value(
+                columns='ID, TEST_SUBJECT, RECORD_TYPE, RECORD_NUMBER, abs_time_s, Ax, Ay ',
+                table='fresh_data',
+                element_filter='id',
+                value=fresh_element[0]
+            )
+            object_data_dict = {}
+
+            object_data_dict = {
+                'abs_time_s': list(map(lambda x: float(x), object_data[4])),
+                'Ax': list(map(lambda x: float(x), object_data[5])),
+                'Ay': list(map(lambda x: float(x), object_data[6])),
+            }
+            dataPD = pd.DataFrame.from_dict(object_data_dict)
+
+            dataPD['Ax'] *= MILLIMETERS
+            dataPD['Ay'] *= MILLIMETERS
+
+            test = KistlerForSQL(dataPD)
+
+            test.ellipse('jjj')
+            data_element = {
+                'RECORD': fresh_element[0],
+                'PROCESSING_TYPE': type,
+                'AVERAGE_X': test.average['averageX (мм)'],
+                'AVERAGE_Y': test.average['averageY (мм)'],
+                'TOTAL_WAY': test.total['total_way (мм)'],
+                'STD_X': test.standard_deviation['stdX (мм)'],
+                'STD_Y':  test.standard_deviation['stdY (мм)'],
+                'ELLIPSE_SQUARE': test.ellipse_square,
+            }
+            print(data_element)
+            write_element_analysis_table(data_element=data_element)
 
 
 analysis_data()

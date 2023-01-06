@@ -34,7 +34,7 @@ def readFile(file_name, window=35):
 
     data_moving_average = dataPD.rolling(window, on='abs time (s)', min_periods=1).mean()
 
-    return data_moving_average[15000:45000]
+    return data_moving_average
 
 
 

@@ -14,13 +14,12 @@ def track_fresh(dataPD, average, x='Ax', y='Ay'):
 
 
 class Kistler:
-
     def __init__(self, url):
         WINDOW = 35
         self.square = None
         self.ellipse_square = None
         self.url = url.replace('\\', '/')
-        self.fresh_data = readFile(self.url)
+        self.fresh_data = readFile(self.url, window=WINDOW)
         self.name = name_cuter(self.url)
         self.total = total_way(self.fresh_data)
         self.average = {
@@ -74,13 +73,36 @@ class Kistler:
         self.ellipse_square = round(ellipse['square'], 2)
         # var = ellipse['plot']
 
-        plt.savefig(path_image + '/' + self.name)
+        # plt.savefig(path_image + '/' + self.name)
         # plt.show()
 
 
-"""
+class KistlerForSQL(Kistler):
+    def __init__(self, dataPD):
+        WINDOW = 35
+        self.square = None
+        self.ellipse_square = None
 
-test = Kistler('ST0012_anger_EO 001.txt')
+        self.fresh_data = dataPD.rolling(WINDOW, min_periods=1).mean()
+
+        # self.name = name_cuter(self.url)
+        self.total = total_way(self.fresh_data)
+        self.average = {
+            'averageX (мм)': self.fresh_data['Ax'].mean(),
+            'averageY (мм)': self.fresh_data['Ay'].mean(),
+        }
+
+        self.covariance_matrix = self.fresh_data[['Ax', 'Ay']].cov()
+        self.pearson = self.covariance_matrix.iloc[0, 1] / sqrt(
+            self.covariance_matrix.iloc[0, 0] * self.covariance_matrix.iloc[1, 1])
+
+        self.standard_deviation = {
+            'stdX (мм)': self.fresh_data['Ax'].std(),
+            'stdY (мм)': self.fresh_data['Ay'].std(),
+        }
+
+"""
+test = Kistler('D:/pr/kistler/data/Stabila_records/ST013/ST013_ts_EO 001.txt')
 print(test.total)
 print(test.average)
 print(test.standard_deviation)
