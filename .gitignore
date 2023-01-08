@@ -6,5 +6,6 @@ example/
 __pycache__/
 pyvenv.cft
 *.png
+*.xlsx
 article/
 data/

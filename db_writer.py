@@ -158,7 +158,7 @@ def get_object_by_value(cursor, connection, columns, table, element_filter, valu
     select = 'SELECT ' + columns + ' FROM ' + table + ' WHERE ' + element_filter + ' = ' + str(value)
 
     cursor.execute(select)
-    result = cursor.fetchone()
+    result = cursor.fetchall()
 
     return result
 
@@ -176,11 +176,12 @@ def write_element_analysis_table(cursor, connection, data_element):
     connection.commit()
     print("данные записаны в analysis")
 
-def analysis_data(type='moving average: window=35, frequency=100Hz'):
+def analysis_data(type_process='15-30 sec, moving average: window=35, frequency=100Hz'):
 
     MILLIMETERS = 1000
 
     list_id_fresh_data = get_primary_key(columns='id', table='fresh_data')
+
     for fresh_element in list_id_fresh_data:
         if fresh_element[0] > 524:
             object_data = get_object_by_value(
@@ -189,12 +190,12 @@ def analysis_data(type='moving average: window=35, frequency=100Hz'):
                 element_filter='id',
                 value=fresh_element[0]
             )
-            object_data_dict = {}
+
 
             object_data_dict = {
-                'abs_time_s': list(map(lambda x: float(x), object_data[4])),
-                'Ax': list(map(lambda x: float(x), object_data[5])),
-                'Ay': list(map(lambda x: float(x), object_data[6])),
+                'abs_time_s': list(map(lambda x: float(x), object_data[0][4]))[15000: 45000],
+                'Ax': list(map(lambda x: float(x), object_data[0][5]))[15000: 45000],
+                'Ay': list(map(lambda x: float(x), object_data[0][6]))[15000: 45000],
             }
             dataPD = pd.DataFrame.from_dict(object_data_dict)
 
@@ -206,7 +207,7 @@ def analysis_data(type='moving average: window=35, frequency=100Hz'):
             test.ellipse('jjj')
             data_element = {
                 'RECORD': fresh_element[0],
-                'PROCESSING_TYPE': type,
+                'PROCESSING_TYPE': type_process,
                 'AVERAGE_X': test.average['averageX (мм)'],
                 'AVERAGE_Y': test.average['averageY (мм)'],
                 'TOTAL_WAY': test.total['total_way (мм)'],
@@ -218,8 +219,37 @@ def analysis_data(type='moving average: window=35, frequency=100Hz'):
             write_element_analysis_table(data_element=data_element)
 
 
-analysis_data()
+# analysis_data()
 
+def exel_write():
+    subject = get_primary_key(columns='id, TEST_SUBJECT', table='TEST_SUBJECT ')
+    print(subject)
+    data_for_exel = {}
+    for el in subject:
+        subject_list = {}
+        records = get_object_by_value(columns='ID, RECORD_TYPE', table='fresh_data', element_filter='TEST_SUBJECT', value=el[0])
+        for el_analys in records:
+            analys = get_object_by_value(columns='PROCESSING_TYPE, AVERAGE_X, AVERAGE_Y, TOTAL_WAY, STD_X, STD_Y, ELLIPSE_SQUARE', table='analysis', element_filter='RECORD', value=el_analys[0])
+            print(analys)
+
+            if analys[1][0] == '15-30 sec, moving average: window=35, frequency=100Hz':
+
+                subject_list[el_analys[1] + ' AVERAGE_X'] = float(analys[1][1]),
+                subject_list[el_analys[1] + ' AVERAGE_Y'] = float(analys[1][2]),
+                subject_list[el_analys[1] + ' TOTAL_WAY'] = float(analys[1][3]),
+                subject_list[el_analys[1] + ' STD_X'] = float(analys[1][4]),
+                subject_list[el_analys[1] + ' STD_Y'] = float(analys[1][5]),
+                subject_list[el_analys[1] + ' ELLIPSE_SQUARE'] = float(analys[1][6]),
+
+            # subject_list.append(analys_dict)
+
+        print(el[1], subject_list)
+        data_for_exel[el[1]] = subject_list
+    print(data_for_exel)
+
+
+
+exel_write()
 # db_create_table_fresh_data()
 # db_write_test_subject(folder='D:/pr/kistler/data/Stabila_records')
 # db_write_fresh_data(folder='D:/pr/kistler/data/Stabila_records')
