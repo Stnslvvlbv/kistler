@@ -183,7 +183,7 @@ def analysis_data(type_process='15-30 sec, moving average: window=35, frequency=
     list_id_fresh_data = get_primary_key(columns='id', table='fresh_data')
 
     for fresh_element in list_id_fresh_data:
-        if fresh_element[0] > 524:
+        if fresh_element[0] > 262:
             object_data = get_object_by_value(
                 columns='ID, TEST_SUBJECT, RECORD_TYPE, RECORD_NUMBER, abs_time_s, Ax, Ay ',
                 table='fresh_data',
@@ -232,14 +232,14 @@ def exel_write():
             analys = get_object_by_value(columns='PROCESSING_TYPE, AVERAGE_X, AVERAGE_Y, TOTAL_WAY, STD_X, STD_Y, ELLIPSE_SQUARE', table='analysis', element_filter='RECORD', value=el_analys[0])
             print(analys)
 
-            if analys[1][0] == '15-30 sec, moving average: window=35, frequency=100Hz':
+            if analys[0][0] == '15-30 sec, moving average: window=35, frequency=100Hz':
 
-                subject_list[el_analys[1] + ' AVERAGE_X'] = float(analys[1][1]),
-                subject_list[el_analys[1] + ' AVERAGE_Y'] = float(analys[1][2]),
-                subject_list[el_analys[1] + ' TOTAL_WAY'] = float(analys[1][3]),
-                subject_list[el_analys[1] + ' STD_X'] = float(analys[1][4]),
-                subject_list[el_analys[1] + ' STD_Y'] = float(analys[1][5]),
-                subject_list[el_analys[1] + ' ELLIPSE_SQUARE'] = float(analys[1][6]),
+                subject_list[el_analys[1] + '_AVERAGE_X'] = float(analys[0][1]),
+                subject_list[el_analys[1] + '_AVERAGE_Y'] = float(analys[0][2]),
+                subject_list[el_analys[1] + '_TOTAL_WAY'] = float(analys[0][3]),
+                subject_list[el_analys[1] + '_STD_X'] = float(analys[0][4]),
+                subject_list[el_analys[1] + '_STD_Y'] = float(analys[0][5]),
+                subject_list[el_analys[1] + '_ELLIPSE_SQUARE'] = float(analys[0][6]),
 
             # subject_list.append(analys_dict)
 
