@@ -176,7 +176,7 @@ def write_element_analysis_table(cursor, connection, data_element):
     connection.commit()
     print("данные записаны в analysis")
 
-def analysis_data(type_process='15-30 sec, moving average: window=35, frequency=100Hz'):
+def analysis_data(type_process='60 sec, moving average: window=35, frequency=100Hz'):
 
     MILLIMETERS = 1000
 
@@ -193,9 +193,9 @@ def analysis_data(type_process='15-30 sec, moving average: window=35, frequency=
 
 
             object_data_dict = {
-                'abs_time_s': list(map(lambda x: float(x), object_data[0][4]))[15000: 45000],
-                'Ax': list(map(lambda x: float(x), object_data[0][5]))[15000: 45000],
-                'Ay': list(map(lambda x: float(x), object_data[0][6]))[15000: 45000],
+                'abs_time_s': list(map(lambda x: float(x), object_data[0][4])), # [15000: 45000],
+                'Ax': list(map(lambda x: float(x), object_data[0][5])), # [15000: 45000],
+                'Ay': list(map(lambda x: float(x), object_data[0][6])), # [15000: 45000],
             }
             dataPD = pd.DataFrame.from_dict(object_data_dict)
 
@@ -232,14 +232,14 @@ def exel_write():
             analys = get_object_by_value(columns='PROCESSING_TYPE, AVERAGE_X, AVERAGE_Y, TOTAL_WAY, STD_X, STD_Y, ELLIPSE_SQUARE', table='analysis', element_filter='RECORD', value=el_analys[0])
             print(analys)
 
-            if analys[0][0] == '15-30 sec, moving average: window=35, frequency=100Hz':
+            if analys[1][0] == '60 sec, moving average: window=35, frequency=100Hz':
 
-                subject_list[el_analys[1] + '_AVERAGE_X'] = float(analys[0][1]),
-                subject_list[el_analys[1] + '_AVERAGE_Y'] = float(analys[0][2]),
-                subject_list[el_analys[1] + '_TOTAL_WAY'] = float(analys[0][3]),
-                subject_list[el_analys[1] + '_STD_X'] = float(analys[0][4]),
-                subject_list[el_analys[1] + '_STD_Y'] = float(analys[0][5]),
-                subject_list[el_analys[1] + '_ELLIPSE_SQUARE'] = float(analys[0][6]),
+                subject_list[el_analys[1] + '_AVERAGE_X'] = float(analys[1][1]),
+                subject_list[el_analys[1] + '_AVERAGE_Y'] = float(analys[1][2]),
+                subject_list[el_analys[1] + '_TOTAL_WAY'] = float(analys[1][3]),
+                subject_list[el_analys[1] + '_STD_X'] = float(analys[1][4]),
+                subject_list[el_analys[1] + '_STD_Y'] = float(analys[1][5]),
+                subject_list[el_analys[1] + '_ELLIPSE_SQUARE'] = float(analys[1][6]),
 
             # subject_list.append(analys_dict)
 
